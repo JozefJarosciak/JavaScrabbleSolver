@@ -10,10 +10,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-/**
- * Created by jaros on 2/14/18.
- */
-
 public class App {
     private JPanel panel1;
     private JTextField searchText;
@@ -42,7 +38,9 @@ public class App {
                     // table.setPreferredScrollableViewportSize(new Dimension(550, 200));
                     model.addColumn("Word");
                     model.addColumn("Scrabble Value");
+
                     table.setModel(model);
+                    table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 18));
                     // scroller.setSize(400,400);
 
                     String searchLetters = searchText.getText().toLowerCase();
