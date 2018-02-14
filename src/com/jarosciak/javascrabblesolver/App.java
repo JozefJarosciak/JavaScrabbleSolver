@@ -1,6 +1,7 @@
 package com.jarosciak.javascrabblesolver;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,9 +16,10 @@ import java.sql.Statement;
 
 public class App {
     private JPanel panel1;
-    private JTextField sgdregreTextField;
-    private JTable table1;
+    private JTextField searchText;
+    private JTable table;
     private JButton searchButton;
+    private JScrollPane scroller;
 
 
     public App() {
@@ -34,10 +36,24 @@ public class App {
                     con = DriverManager.getConnection("jdbc:hsqldb:file:src/db/endb/", "admin", "admin");
                     stmt = con.createStatement();
 
-                    result = stmt.executeQuery("SELECT ID,WORD FROM PUBLIC.WORDS WHERE word LIKE '%sheer%'");
+                    DefaultTableModel model = new DefaultTableModel();
+                    table.setAutoCreateRowSorter(true);
+                    table.setFillsViewportHeight(true);
+                    // table.setPreferredScrollableViewportSize(new Dimension(550, 200));
+                    model.addColumn("Word");
+                    model.addColumn("Scrabble Value");
+                    table.setModel(model);
+                    // scroller.setSize(400,400);
 
-                    while(result.next()){
-                        System.out.println(result.getInt("id") + " | " + result.getString("word"));
+                    String searchLetters = searchText.getText().toLowerCase();
+                    //System.out.println("SEARCH TEXT:" + searchLetters);
+
+                    result = stmt.executeQuery("SELECT WORD FROM PUBLIC.WORDS WHERE word LIKE '%" + searchLetters + "%'");
+
+                    while (result.next()) {
+                        String foundWord = result.getString("word");
+                        model.addRow(new Object[]{foundWord, "0"});
+                        //System.out.println("Found Word:" + foundWord);
                     }
 
                     con.close();
@@ -59,11 +75,7 @@ public class App {
         //frame.pack();
         frame.setVisible(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(dim.width/2-frame.getSize().width/2, dim.height/2-frame.getSize().height/2);
-
-
-
-
+        frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
     }
 
 }
