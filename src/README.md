@@ -2,7 +2,7 @@
 
 # Description
 The following Java Scrabble Solver finds the highest ranking Scrabble words based on entered letters (up to 7).
-It's using embedded HSWQLDB to look for words.
+It's using embedded HSQLDB to look for words.
 
 # Requirements
 Java 8
