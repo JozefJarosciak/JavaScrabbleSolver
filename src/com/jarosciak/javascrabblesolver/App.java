@@ -18,8 +18,6 @@ public class App {
     private JTable table;
     private JButton searchButton;
     private JScrollPane scroller;
-    int scrabbleValue = 0;
-
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("");
@@ -87,27 +85,35 @@ public class App {
 
 
     public String createSqlQueryAndTotalScrabbleValue(String enteredWord) {
+         String alphabet = "abcdefghijklmnopqrstuvwxyz";
+
         // split entered string into letters
         String[] array = enteredWord.split("(?!^)");
         int arrLen = array.length;
-        String sqlQuery = "SELECT WORD FROM PUBLIC.WORDS WHERE ";
-
+        String sqlQuery = "SELECT WORD FROM PUBLIC.WORDS WHERE (";
         for(int i=0; i<arrLen; i++){
-            sqlQuery = sqlQuery +  "word LIKE '%" + array[i] + "%' AND ";
-            scrabbleValue = scrabbleValue + charScrabbleValue(array[i]);
-            System.out.println("Letter is: " + array[i] + " - " + scrabbleValue) ;
+            //sqlQuery = sqlQuery +  "word LIKE '%" + array[i] + "%' AND ";
+            sqlQuery = sqlQuery +  "LOWER(WORD) LIKE '%" + array[i] + "%' OR ";
+            // remove used letters from alphabet string
+            alphabet = alphabet.replace(array[i], "");
+        }
+        sqlQuery = sqlQuery.replaceFirst(" OR $", "");
+
+        sqlQuery = sqlQuery + " AND LENGTH(WORD)<="+arrLen+") AND (";
+
+        for(int i=0; i<alphabet.length(); i++) {
+            sqlQuery = sqlQuery + "LOWER(WORD) NOT LIKE '%" + alphabet.charAt(i)+"%' AND ";
+            sqlQuery = sqlQuery + "LOWER(WORD) NOT LIKE '" + alphabet.charAt(i)+"%' AND ";
+            sqlQuery = sqlQuery + "LOWER(WORD) NOT LIKE '%" + alphabet.charAt(i)+"' AND ";
         }
         sqlQuery = sqlQuery.replaceFirst(" AND $", "");
-
-        sqlQuery = sqlQuery + " AND LENGTH(word)<="+arrLen;
+        sqlQuery = sqlQuery + ")";
         return sqlQuery;
     }
 
 
     public void dbQuery() {
-        // reset scrabble value
-        scrabbleValue = 0;
-        // TEST FILL TABLE
+
         try {
 
             // Connect to Embedded DB
@@ -135,13 +141,25 @@ public class App {
 
             // Run SQL query
             ResultSet result = stmt.executeQuery(sqlQuery);
+
+
             int count = 0;
             while (result.next()) {
                 count++;
-                String foundWord = result.getString("word");
+                String foundWord = result.getString("word").toLowerCase();
+
+
+                // reset scrabble value
+                int scrabbleValue = 0;
+
+                for(int i=0; i<foundWord.length(); i++){
+                    //sqlQuery = sqlQuery +  "word LIKE '%" + array[i] + "%' AND ";
+                    scrabbleValue = scrabbleValue + charScrabbleValue(Character.toString(foundWord.charAt(i)));
+                }
+
 
                 // add found row to table
-                model.addRow(new Object[]{count, foundWord, scrabbleValue});
+                model.addRow(new Object[]{count, foundWord.toUpperCase(), scrabbleValue});
             }
 
             con.close();

@@ -10,3 +10,5 @@ SELECT * from words where word like '%sheer%';
 SELECT ID,WORD FROM PUBLIC.WORDS WHERE word = 'sheer';
 
 SELECT COUNT(*) from PUBLIC.WORDS;
+
+DELETE from words where LENGTH(WORD)=1;
