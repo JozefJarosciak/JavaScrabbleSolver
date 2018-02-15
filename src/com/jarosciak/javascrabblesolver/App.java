@@ -84,7 +84,7 @@ public class App {
     }
 
 
-    public String createSqlQueryAndTotalScrabbleValue(String enteredWord) {
+    public String createSqlQuery(String enteredWord) {
          String alphabet = "abcdefghijklmnopqrstuvwxyz";
 
         // split entered string into letters
@@ -136,7 +136,7 @@ public class App {
             String searchLetters = searchText.getText().toLowerCase();
 
             // Build SQL Search Query based on the letters entered by the user
-            String sqlQuery = createSqlQueryAndTotalScrabbleValue(searchLetters);
+            String sqlQuery = createSqlQuery(searchLetters);
             System.out.println(sqlQuery);
 
             // Run SQL query
