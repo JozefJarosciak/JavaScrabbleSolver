@@ -1,5 +1,3 @@
-package com.jarosciak.javascrabblesolver;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -79,7 +77,7 @@ public class Main {
 
         if ((chr.contains("q"))||(chr.contains("z")) ) {charValue=10;}
 
-        System.out.println("Value is: " + charValue) ;
+        //System.out.println("Value is: " + charValue) ;
         return charValue;
     }
 
