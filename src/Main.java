@@ -116,7 +116,7 @@ public class Main {
 
             // Connect to Embedded DB
             Class.forName("org.hsqldb.jdbc.JDBCDriver");
-            Connection con = DriverManager.getConnection("jdbc:hsqldb:file:src/db/endb/", "admin", "admin");
+            Connection con = DriverManager.getConnection("jdbc:hsqldb:file:/src/db/endb", "admin", "admin");
             Statement stmt = con.createStatement();
 
             // Setup Table for Displaying Results
