@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-public class App {
+public class Main {
 
     // declaring the components
     private JPanel panel1;
@@ -21,7 +21,7 @@ public class App {
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("");
-        frame.setContentPane(new App().panel1);
+        frame.setContentPane(new Main().panel1);
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //frame.pack();
@@ -31,7 +31,7 @@ public class App {
     }
 
 
-    public App() {
+    public Main() {
 
         // Listen to Search Button
         searchButton.addActionListener(new ActionListener() {
